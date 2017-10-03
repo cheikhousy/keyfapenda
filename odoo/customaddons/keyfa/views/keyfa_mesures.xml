@@ -1,0 +1,137 @@
+<odoo>
+<!-- This Menu Item must have a parent and an action -->
+
+         <record id="mesures_view_menu" model="ir.ui.view">
+            <field name="name">liste.mesures</field>
+            <field name="model">order.mesure</field>
+            <field name="priority">2</field>
+            <field name="arch" type="xml">
+                <tree string="Liste des mesures">
+                    <field name="date_mesure"/>
+                     <field name="sexe"/>
+                </tree>
+            </field>
+        </record>
+
+        <!--Menu/action mesure-->
+        <record id="mesures_action" model="ir.actions.act_window">
+            <field name="name">Mesures</field>
+            <field name="res_model">order.mesure</field>
+            <field name="view_id" ref="mesures_view_menu"/>
+            <field name="view_mod">tree</field>
+        </record>
+
+       <!--  <menuitem name="Mesures" id="menu_list_mesures" sequence="11" parent="sales_team.menu_sales" action="mesures_action"/> -->
+
+    <record id="mesures_view_menu" model="ir.ui.view">
+            <field name="name">liste.mesures</field>
+            <field name="model">order.mesure</field>
+            <field name="priority">1</field>
+            <field name="arch" type="xml">
+                <tree string="Liste des mesures">
+                    <field name="sexe"/>
+                    <field name="date_mesure"/>
+                </tree>
+            </field>
+        </record>
+
+
+    <!--Formulaire de création des mesures-->
+     <record id="mesures_form" model="ir.ui.view">
+            <field name="name">mesures.form</field>
+            <field name="model">order.mesure</field>
+            <field name="arch" type="xml">
+                <form string="Mesures">
+                      <group name="grp1" >
+                         <group name="grp11" string="Mesure">
+                             <field name="sexe"/>
+                             <field name="date_mesure"/>
+                             <field name="Long_Ep" attrs="{'invisible': [('sexe','=', 'f')]}"/>
+                             <field name="Tour_Cou"/>
+                             <field name="C_Bat"/>
+                             <field name="V_Pince" attrs="{'invisible': [('sexe','=', 'h')]}"/>
+                             <field name="H_Poitr"/>
+                             <field name="T_Poitr" attrs="{'invisible': [('sexe','=', 'f')]}"/>
+                             <field name="Ceint"/>
+                             <field name="T_Bass" attrs="{'invisible': [('sexe','=', 'f')]}"/>
+                             <field name="L_Manc"/>
+                             <field name="L_Manch3_4"/>
+                             <field name="T_Bras" attrs="{'invisible': [('sexe','=', 'h')]}"/>
+                             <field name="T_Poig"/>
+                             <field name="T_Cuiss" attrs="{'invisible': [('sexe','=', 'h')]}"/>
+                             <field name="L_Genou"/>
+                        </group>
+                          <group name="grp12" string="Reference Models choisis">
+                              <field name="T_Veste"/>
+                              <field name="T_Chem"/>
+                              <field name="T_Pant"/>
+                              <field name="T_Stat"/>
+                              <field name="Broderie"/>
+                              <field name="Gabarit"/>
+
+                          </group>
+                        </group>
+
+                </form>
+            </field>
+        </record>
+
+     <!--Ajout champs mesures dans le formulaire client-->
+       <record id="partner_mesures_form" model="ir.ui.view">
+        <field name="name">mesure.client</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+          <xpath expr="//page[@name='internal_notes']" position="before">
+            <page name="mesures" string=" Mesures">
+                 <field name = "mesures"/>
+            </page>
+          </xpath>
+
+        </field>
+       </record>
+
+    <record id="sale_mesures_form" model="ir.ui.view">
+        <field name="name">mesure.client.sale</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+          <xpath expr="//field[@name='invoice_lines']" position="before">
+              <label for="mesures"/>
+              <field name = "mesures"/>
+          </xpath>
+           <!-- <xpath expr="//field[@name='partner_id']" position="inside">
+              <field name="partner_id" domain="[('customer','=',True)]" context="{'search_default_customer':1, 'show_address': 1}" options='{"always_reload": True}' on_change="onchange_mesures"/>
+            </xpath> -->
+
+        </field>
+       </record>
+
+     <!--Ajout champs mesures dans le formulaire du bon de commande-->
+        <!--<record id="sale_mesures_form" model="ir.ui.view">
+        <field name="name">mesure.client.sale</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+          <xpath expr="//field[@name='invoice_lines']" position="before">
+              <field name = "product_id"/>
+          </xpath>
+        </field>
+       </record>-->
+
+     <record id="mrp_mesures_form" model="ir.ui.view">
+        <field name="name">mesure.client.mrp</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+          <xpath expr="//page[1]" position="after">
+            <page name="mesures" string=" Mesures">
+                <field name = "sale_mesures"/>
+            </page>
+          </xpath>
+        </field>
+       </record>
+
+</odoo>
